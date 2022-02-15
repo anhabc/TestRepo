@@ -14,7 +14,7 @@ public class Client {
         final Socket clientSocket;
         final BufferedReader in;
         final PrintWriter out;
-        final Scanner sc = new Scanner(System.in);
+        final Scanner scanner = new Scanner(System.in);
 
         try {
             clientSocket = new Socket("localhost",9091);
@@ -23,29 +23,29 @@ public class Client {
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
             Thread sender = new Thread(new Runnable() {
-                String msg;
+                String message;
                 @Override
                 public void run() {
                     while (true){
-                        msg = sc.nextLine();
-                        out.println(msg);
+                        message = scanner.nextLine();
+                        out.println(message);
 
                     }
                 }
             });
             sender.start();
             Thread receiver = new Thread(new Runnable() {
-                String msg;
+                String message;
                 @Override
                 public void run() {
                     try {
-                        msg = in.readLine();
-                        while (!Objects.equals(msg, "exit")){
-                            if (msg == null){
+                        message = in.readLine();
+                        while (!Objects.equals(message, "exit")){
+                            if (message == null){
                                 break;
                             }
-                            System.out.println("Server: "+msg);
-                            msg = in.readLine();
+                            System.out.println("Server: "+message);
+                            message = in.readLine();
                         }
                         System.out.println("Server disconnected");
                         out.close();
